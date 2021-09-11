@@ -19,7 +19,9 @@
             </label>
             <button 
             class='button button_save'
-            @click.prevent="boardTitleEdit">
+            @click.prevent="boardTitleEdit"
+            :disabled="disabledBoardSaveButton"
+            :class="[disabledBoardSaveButton ? 'button_disabled' : '']">
               Сохранить
               </button>
             <button 
@@ -28,7 +30,9 @@
               Отмена
               </button>
                 </form>
-          <button class='button button_delete button_delete-board'>Удалить доску</button>
+          <button 
+          class='button button_delete button_delete-board'
+          @click.prevent="boardDelete">Удалить доску</button>
               <!-- <tasks-list /> -->
                 <button class='button button_add'>
                   Добавить задачу
@@ -88,8 +92,23 @@ export default {
   },
   methods: {
     boardTitleEdit() {
-      console.log(this.boardItemData.id)
-      this.$emit('boardTitleEdit', this.boardItemData.id);
+      console.log(this.boardItemData.id);
+      this.boardItemData.title = this.boardTitle;
+      // this.$emit('boardTitleEdit', this.boardItemData.id, this.boardTitle);
+      this.boardForm=false;
+    },
+    boardDelete() {
+      this.$emit('boardDelete', this.boardItemData.id);
+    }
+  },
+  computed: {
+    disabledBoardSaveButton() {
+      if (this.boardTitle.trim().length > 0) {
+        return false
+      } 
+      else {
+        return true
+      }
     }
   }
 }
@@ -131,13 +150,6 @@ export default {
   background-color: white;
   
 }
-.change-input_main {
-  width: 80%;
-  font-size: 20px;
-  padding: 8px 20px;
-  border-radius: 0;
-  border-color: lightcoral;
-}
 .change-board-input {
     margin-bottom: 10px;
 }
@@ -147,7 +159,7 @@ export default {
 }
 .button_delete,
 .button_cancel {
-    border-color: lightcoral;
+    border-color: lightcoral !important;
     background-color: transparent;
 }
 .button_add {
@@ -158,8 +170,12 @@ export default {
 .button_edit,
 .button_save {
     margin-right: 5px;
+    background-color: lightgray;
 }
 .board-title {
     margin-bottom: 10px;
+}
+.button_disabled {
+  background-color: rgb(211, 211, 211, .4);
 }
 </style>

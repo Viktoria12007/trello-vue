@@ -15,13 +15,14 @@
              class='button button_main'
              @click.prevent="addBoard"
              :disabled="disabledMainButton"
-             :class="[disabledMainButton ? 'button_disabled' : '']"
+             :class="[disabledMainButton ? 'button_main_disabled' : '']"
              >
                Добавить доску
                </button>
         </form>
     <boards-list 
     :boardsListData="boardsListData"
+    @boardDelete="boardDelete"
     />
   </div>
 </template>
@@ -48,7 +49,21 @@ export default {
       const newBoard = {};
       newBoard.title = this.boardTitle;
       this.boardsListData.push(newBoard);
+      this.boardTitle = '';
       console.log(this.boardsListData)
+    },
+    // boardTitleEdit(currentId, currentTitle) {
+    //   this.boardsListData[currentId].title = currentTitle
+    //   console.log(this.boardsListData[currentId].title)
+    //   console.log(currentTitle)
+    // }
+    boardDelete(currentId) {
+      const currentIndex = this.boardsListData.findIndex((item) => {
+        item.id === currentId
+      })
+      console.log(currentIndex);
+      this.boardsListData.splice(currentIndex, 1);
+      console.log(this.boardsListData);
     }
   },
   computed: {
@@ -114,8 +129,8 @@ li {
    border-radius: 0;
    background-color: lightcoral;
 }
-.button_disabled {
-  background-color: rgb(240, 128, 128, .4) ;
+.button_main_disabled {
+  background-color: rgb(240, 128, 128, .4);
 }
 .change-form {
     width: 100%;
@@ -126,5 +141,12 @@ li {
     display: block;
     align-items: center;
     margin-bottom: 20px;
+}
+.change-input_main {
+  width: 80%;
+  font-size: 20px;
+  padding: 8px 20px;
+  border-radius: 0;
+  border-color: lightcoral;
 }
 </style>

@@ -5,7 +5,7 @@
     v-for="item in boardsListData"
     :key="item.id"
     :boardItemData="item"
-    @boardTitleEdit="boardTitleEdit"
+    @boardDelete="boardDelete"
     v-else  
     />
     
@@ -40,9 +40,13 @@ export default {
 //   }
 // }
 methods: {
-  boardTitleEdit(currentId, currentTitle) {
-    this.boardsListData[currentId].title = currentTitle
-    // console.log(currentId)
+  // boardTitleEdit(currentId, currentTitle) {
+  //   this.$emit('boardTitleEdit', currentId, currentTitle)
+    // this.boardsListData[currentId].title = currentTitle
+    // console.log(this.boardsListData[currentId].title)
+  // }
+  boardDelete(currentId) {
+     this.$emit('boardDelete', currentId)
   }
 }
 }
