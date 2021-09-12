@@ -47,7 +47,10 @@ methods: {
   // }
   boardDelete(currentId) {
      this.$emit('boardDelete', currentId)
-  }
+  },
+  // taskAdd(newTask, currentId) {
+  //    this.$emit('taskAdd', newTask, currentId)
+  // }
 }
 }
 </script>

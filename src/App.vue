@@ -41,13 +41,19 @@ export default {
   data() {
       return {
         boardTitle: '',
-        boardsListData: [{id: 1, title: "ifjos"}, {id: 2, title: "oioio"}, {id: 3, title: "dsfsa"}]
+        boardsListData: [{id: 1, title: "ifjos", tasks: []}, 
+        {id: 2, title: "oioio", tasks: [{title: 'eff', text: 'wdwd'}, {title: 'iok', text: 'sfg'}]}, 
+        {id: 3, title: "dsfsa", tasks: [{title: 'xzc', text: 'rete'}]}]
+        // boardsListData: []
    }
   },
   methods: {
     addBoard() {
       const newBoard = {};
+      newBoard.id = (new Date()).toString();
+      console.log(newBoard.id);
       newBoard.title = this.boardTitle;
+      newBoard.tasks = [];
       this.boardsListData.push(newBoard);
       this.boardTitle = '';
       console.log(this.boardsListData)
@@ -64,7 +70,13 @@ export default {
       console.log(currentIndex);
       this.boardsListData.splice(currentIndex, 1);
       console.log(this.boardsListData);
-    }
+    },
+    // taskAdd(newTask, currentId) {
+    //    const currentIndex = this.boardsListData.findIndex((item) => {
+    //     item.id === currentId
+    //   })
+    //   this.boardsListData[currentIndex].tasks.push(newTask);
+    // }
   },
   computed: {
     disabledMainButton() {

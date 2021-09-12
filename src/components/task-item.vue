@@ -1,10 +1,7 @@
 <template>
-<li 
-  key={task.id} 
-  id={task.id} 
-  class='task'>
-  <h3 class='task-title'></h3>
-  <p class='task-text'></p>
+<li class='task'>
+  <h3 class='task-title'>{{taskItemData.title}}</h3>
+  <p class='task-text'>{{taskItemData.text}}</p>
   <button class='button button_edit'>Редактировать</button>
   <form class='change-form'>
   <label class='change-label'>
@@ -34,17 +31,17 @@
 </template>
 
 <script>
-// export default {
-//   name: 'board-item',
-//   props: {
-//     boardItemData: {
-//       type: Object,
-//       default() {
-//         return {}
-//       }
-//     }
-//   }
-// }
+export default {
+  name: 'task-item',
+  props: {
+    taskItemData: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  }
+}
 </script>
 
 <style>

@@ -33,15 +33,20 @@
           <button 
           class='button button_delete button_delete-board'
           @click.prevent="boardDelete">Удалить доску</button>
-              <!-- <tasks-list /> -->
-                <button class='button button_add'>
+              <tasks-list 
+              :tasksListData="boardItemData.tasks"/>
+                <button class='button button_add'
+                 @click="taskForm=true" 
+                 v-show="!taskForm">
                   Добавить задачу
                   </button>
-                <form class='change-form'>
+                <form class='change-form'
+                v-show="taskForm">
                 <label class='change-label'>
                 <div class='change-input-error'></div>
                 <input class='change-input' 
-                placeholder='Введите название задачи'>
+                placeholder='Введите название задачи'
+                v-model="taskTitle">
                 </label>
                 <label class='change-label'>
                 <div class='change-textarea-error'></div>
@@ -49,13 +54,18 @@
                 cols='10' 
                 rows='10' 
                 class='change-textarea' 
-                placeholder='Введите описание задачи'>
+                placeholder='Введите описание задачи'
+                v-model="taskText">
                 </textarea>
                 </label>
-                <button class='button button_save'>
+                <button class='button button_save'
+                 @click.prevent="taskAdd"
+                 :disabled="disabledTaskSaveButton"
+                 :class="[disabledTaskSaveButton ? 'button_disabled' : '']">
                   Сохранить
                   </button>
-                    <button class='button button_cancel'>
+                    <button class='button button_cancel'
+                    @click.prevent="taskForm=false">
                       Отмена
                     </button>
                 </form>
@@ -63,12 +73,12 @@
 </template>
 
 <script>
-// import tasksList from './tasks-list.vue'
+import tasksList from './tasks-list.vue'
 
 export default {
   name: 'board-item',
    components: { 
-    // tasksList 
+    tasksList 
     },
   props: {
     // boardsListData: {
@@ -82,12 +92,21 @@ export default {
       default() {
         return {}
       }
-    }
+    },
+    //  tasksListData: {
+    //   type: Array,
+    //   default() {
+    //     return []
+    //   }
+    // }
   },
   data() {
     return {
     boardForm: false,
-    boardTitle: this.boardItemData.title
+    boardTitle: this.boardItemData.title,
+    taskForm: false,
+    taskTitle: '',
+    taskText: '',
     }
   },
   methods: {
@@ -99,11 +118,36 @@ export default {
     },
     boardDelete() {
       this.$emit('boardDelete', this.boardItemData.id);
+    },
+    taskAdd() {
+      const newTask = {};
+      // newTask.id = new Date().format('m-d-Y h:i:s');
+      // newTask.id = new Date();
+      // newTask.id = dateFormat(new Date(), 'm-d-Y h:i:s');
+      newTask.id = (new Date()).toString();
+      console.log(typeof(newTask.id));
+      newTask.title = this.taskTitle;
+      newTask.text = this.taskText;
+      // this.boardsListData.push(newBoard);
+      this.taskTitle = '';
+      this.taskText = '';
+      // console.log(this.boardsListData)
+      this.taskForm=false;
+      this.boardItemData.tasks.push(newTask);
+      // this.$emit('taskAdd', newTask, this.boardItemData.id);
     }
   },
   computed: {
     disabledBoardSaveButton() {
       if (this.boardTitle.trim().length > 0) {
+        return false
+      } 
+      else {
+        return true
+      }
+    },
+    disabledTaskSaveButton() {
+       if (this.taskTitle.trim().length > 0 && this.taskText.trim().length > 0) {
         return false
       } 
       else {
